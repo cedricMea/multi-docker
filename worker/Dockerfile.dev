@@ -1,0 +1,9 @@
+FROM node:alpine
+WORKDIR "/app"
+COPY ./package.json ./
+RUN npm install
+COPY ./ ./
+
+# npm run dev est une commande spéciale permettant de reloader tout le projet (tous les dockers)
+# quand un source file change
+CMD ["npm", "run", "dev"] 
