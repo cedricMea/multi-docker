@@ -1,0 +1,32 @@
+sudo: required
+
+services:
+    - docker 
+
+before_install:
+    # -t specifie le tag
+    - docker build -t meacedric/react-test -f ./client/Dockerfile.dev ./client
+    # build other docker instance for others tests
+
+script:
+    - docker run -e CI=true meacedric/react-test npm test 
+
+
+# On ajoute un bloc qui apres que les tests soit passer avec succes 
+after_succes:
+    # On build les productions version de chaque image 
+    - docker build -t meacedric/multi-client ./client
+    - docker build -t meacedric/multi-nginx ./nginx
+    - docker build -t meacedric/multi-server ./server
+    - docker build -t meacedric/multi-worker ./worker
+
+    # Log in to my DOCKER CLI
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+
+    # Take those images and push them to docker hub
+    - docker push meacedric/multi-client
+    - docker push meacedric/multi-nginx
+    - docker push meacedric/multi-server
+    - docker push meacedric/multi-worker
+
