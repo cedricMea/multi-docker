@@ -1,0 +1,39 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions":[
+        {
+            "name": "client",
+            "image": "meacedric/multi-client",
+            "hostname":"client",
+            "essential":false 
+        },
+        {
+            "name": "server",
+            "image": "meacedric/multi-server",
+            "hostname":"api",
+            "essential":false 
+        },
+        {
+            "name": "worker",
+            "image": "meacedric/multi-worker",
+            "hostname":"worker",
+            "essential":false 
+        },
+
+        {
+            "name": "nginx",
+            "image": "meacedric/multi-nginx",
+            "hostname":"nginx",
+            "essential":true,
+            "_comment": "One container must be essential. THat means if it's down every other container will be down",
+            "portMappings":[
+                {
+                    "hostPort":80,
+                    "containerPort":80
+                }
+            ],
+            "links": ["client", "server"] 
+        
+        }
+    ]
+}

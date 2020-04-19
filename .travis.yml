@@ -30,3 +30,19 @@ after_succes:
     - docker push meacedric/multi-server
     - docker push meacedric/multi-worker
 
+
+deploy:
+    provider: elasticbeanstalk
+    region: "eu-west-3"
+    app: "multi-docker"
+    env: "MultiDocker-env"
+    bucket_name: "elasticbeanstalk-eu-west-3-690056171037" # in S3 services 
+    bucket_path: "multi-docker"  # Save as app
+    on:
+        branch: master # Deploy when the master branch is updated
+
+    # # Specify key_id and secret_key to access the AWS machine
+    # These keys have been defined in the project env variable on travis-ci.com
+    access_key_id: $AWS_ACCESS_KEY  
+    secret_access_key: $AWS_SECRET_KEY
+
