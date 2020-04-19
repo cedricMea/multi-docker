@@ -5,19 +5,23 @@
             "name": "client",
             "image": "meacedric/multi-client",
             "hostname":"client",
-            "essential":false 
+            "essential":false,
+            "memory": 128,
+            "_comment": "The memory args is the size of the container no guidelines for this value" 
         },
         {
             "name": "server",
             "image": "meacedric/multi-server",
             "hostname":"api",
-            "essential":false 
+            "essential":false,
+            "memory": 128 
         },
         {
             "name": "worker",
             "image": "meacedric/multi-worker",
             "hostname":"worker",
-            "essential":false 
+            "essential":false,
+            "memory": 128  
         },
 
         {
@@ -25,14 +29,15 @@
             "image": "meacedric/multi-nginx",
             "hostname":"nginx",
             "essential":true,
-            "_comment": "One container must be essential. THat means if it's down every other container will be down",
+            "_comment": "One container must have essential=true. THat means if it's down every other container will be down",
             "portMappings":[
                 {
                     "hostPort":80,
                     "containerPort":80
                 }
             ],
-            "links": ["client", "server"] 
+            "links": ["client", "server"],
+            "memory": 128  
         
         }
     ]
